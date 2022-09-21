@@ -1,24 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect, useRef } from "react";
+import "./App.css";
 
 function App() {
+  const [url, setUrl] = useState([]);
+  const img = useRef();
+
+  useEffect(() => {
+    let interval,
+      i = 0;
+    interval = setInterval(() => {
+      if (i < 5) {
+        setUrl((prev) =>([...prev, 'https://coffee.alexflipnote.dev/random']));
+        i++;
+      } else {
+        clearInterval(interval);
+      }
+
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  console.log(url);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {
+        url.map((item, i) => {
+          return (
+            <div className="App">
+              <img src={item} ref={img} />
+            </div>
+          );
+        })}
+    </>
   );
 }
 
